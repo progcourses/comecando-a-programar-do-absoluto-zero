@@ -4,36 +4,33 @@
         <title>Pessoas - Cadastro</title>
         <script type="text/javascript" src="./tabela.js"></script>
         <script type="text/javascript">
-            
-            var pessoas = [
-                [0, ''],
-                [0, ''],
-                [0, ''],
-                [0, ''],
-                [0, ''],
-                [0, ''],
-                [0, ''],
-                [0, ''],
-                [0, ''],
-                [0, '']
-            ]
+            var sequence = 0;
+            var pessoas = [];
 
             function salvar() {
+                sequence++;
+
                 var id = document.getElementById('id').value;
                 var nome = document.getElementById('nome').value;
+                var pessoa = [id, nome];
 
+                if(!id) {
+                    id = sequence;
+                }
+
+                pessoa = [id, nome];
+                
                 console.log(id);
                 console.log(nome);
 
-                pessoas[id][0] = id;
-                pessoas[id][1] = nome;
+                pessoas[id] = pessoa;
 
+                limpaFormulario();
                 consultarPessoas();
             }
 
             function excluirPessoa(id) {
-                pessoas[id][0] = 0;
-                pessoas[id][1] = '';
+                pessoas[id] = undefined;
                 consultarPessoas();
             }
 
@@ -43,22 +40,37 @@
                 document.getElementById('nome').focus();
             }
 
+            function limpaFormulario() {
+                document.getElementById('id').value = "";
+                document.getElementById('nome').value = "";
+                document.getElementById('nome').focus();
+            }
+
             function consultarPessoas() {
-                limpaTabela();
+                var nomeConsulta = document.getElementById('nome').value;
+                var buscarPorNome = false;
+
+                if(nomeConsulta) {
+                    buscarPorNome = true;
+                }
+
+                limparTabela();
 
                 var i;
                 var id;
                 var nome;
-                for(i = 0; i < 10; i++) {
-                    id = pessoas[i][0];
-                    nome = pessoas[i][1];
-                    if(id != 0) {
-                        inserirPessoa(id, nome);
+                for(i = 0; i < pessoas.length; i++) {
+                    if(pessoas[i]) {
+                        id = pessoas[i][0];
+                        nome = pessoas[i][1];
+                        if((buscarPorNome && nomeConsulta == nome) || !buscarPorNome) {
+                            inserirPessoa(id, nome);
+                        }
                     }
                 }
             }
 
-            function limpaTabela() {
+            function limparTabela() {
                 var tableHeaderRowCount = 1;
                 var table = document.getElementById("tabela_pessoas");
                 var rowCount = table.rows.length;
@@ -73,13 +85,14 @@
         <div class="form-group m-5">
                 <h1>Cadastro de pessoas</h1>
                 <label for="id">ID:</label>
-                <input type="number" class="form-control" id="id"/>
+                <input type="number" class="form-control" id="id" readonly/>
                 <br>
                 <label for="nome">Nome:</label>
                 <input type="nome" class="form-control" id="nome" />
                 <br>
                 <button type="button" class="btn btn-success" onclick="salvar();">Salvar</button>
                 <button type="button" class="btn btn-primary" onclick="consultarPessoas();">Consultar</button>
+                <button type="button" class="btn btn-warning" onclick="limpaFormulario();">Novo</button>
 
             <br>
             <table class="table m-4" id="tabela_pessoas">

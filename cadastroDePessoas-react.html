@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <title>Pessoas - Cadastro</title>
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script type="text/javascript">
+            
+            var pessoas = [
+                [0, ''],
+                [0, ''],
+                [0, ''],
+                [0, ''],
+                [0, ''],
+                [0, ''],
+                [0, ''],
+                [0, ''],
+                [0, ''],
+                [0, '']
+            ]
+
+            function salvar() {
+                var id = document.getElementById('id').value;
+                var nome = document.getElementById('nome').value;
+
+                console.log(id);
+                console.log(nome);
+
+                pessoas[id][0] = id;
+                pessoas[id][1] = nome;
+
+                consultarPessoas();
+            }
+
+            function excluirPessoa(id) {
+                pessoas[id][0] = 0;
+                pessoas[id][1] = '';
+                consultarPessoas();
+            }
+
+            function consultarPessoas() {
+                limpaTabela();
+
+                var i;
+                var id;
+                var nome;
+                for(i = 0; i < 10; i++) {
+                    id = pessoas[i][0];
+                    nome = pessoas[i][1];
+                    if(id != 0) {
+                        inserirPessoa(id, nome);
+                    }
+                }
+               
+               const e = React.createElement;
+
+                // Exibe um "Like" <button>
+                return e(
+                'button',
+                { onClick: () => this.setState({ liked: true }) },
+                'Like'
+                );
+
+            }
+
+            function inserirPessoa(id, nome) {
+                var cell = document.createElement("td");
+                tabBody=document.getElementById("tabela_pessoas");
+                row=document.createElement("tr");
+
+                cell = document.createElement("td");
+                var node=document.createTextNode(id);
+                cell.appendChild(node);
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                var node=document.createTextNode(nome);
+                cell.appendChild(node);
+                row.appendChild(cell);
+
+
+                var excluirCell = document.createElement("td");
+                var botaoExcluir = document.createElement("button");
+                botaoExcluir.setAttribute("onClick", `excluirPessoa(${id})`);
+                var nodeExcluir=document.createTextNode("Excluir");
+                botaoExcluir.appendChild(nodeExcluir);
+                excluirCell.appendChild(botaoExcluir);
+                row.appendChild(excluirCell);
+
+                tabBody.appendChild(row);
+
+                return (
+                    <tr>
+                    <td>{id}</td>
+                    <td>{nome}</td>
+                    <td><button onClick="excluirPessoa(${id})">Excluir</button></td>
+                    </tr>
+                );
+            }
+
+            function limpaTabela() {
+                var tableHeaderRowCount = 1;
+                var table = document.getElementById("tabela_pessoas");
+                var rowCount = table.rows.length;
+                for (var i = tableHeaderRowCount; i < rowCount; i++) {
+                    table.deleteRow(tableHeaderRowCount);
+                }
+            }
+
+        </script>
+    </head>
+    <body>
+        <div class="form-group m-5">
+                <h1>Cadastro de pessoas</h1>
+                <label for="id">ID:</label>
+                <input type="number" class="form-control" id="id"/>
+                <br>
+                <label for="nome">Nome:</label>
+                <input type="nome" class="form-control" id="nome" />
+                <br>
+                <button type="button" class="btn btn-success" onclick="salvar();">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="consultarPessoas();">Consultar</button>
+
+            <br>
+            <table class="table m-4" id="tabela_pessoas">
+                <thead>
+                    <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
