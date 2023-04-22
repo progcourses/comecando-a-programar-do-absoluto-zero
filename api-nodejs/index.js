@@ -5,6 +5,8 @@ const server = restify.createServer({
     version: "1.0.0"
 })
 
+server.use(restify.plugins.bodyParser({ mapParams: true }));
+
 server.listen(8081, function() {
     console.log("Escutando porta 8081");
 });
@@ -30,6 +32,31 @@ server.get("/pessoas/:id", function(req, res, next) {
     console.log(req);
     console.log("Consultando pessoa de id " + idPessoa);
     res.send(pessoa);
+});
+
+server.put("/pessoas", function(req, res, next) {
+    var pessoa = req.body;
+
+    console.log(req);
+    console.log("Alterando pessoa de id " + pessoa.id);
+    res.send(pessoa);
+});
+
+server.post("/pessoas", function(req, res, next) {
+    var pessoa = req.body;
+
+    console.log(req);
+    console.log("Inserindo pessoa:");
+    console.dir(pessoa);
+    res.send(pessoa);
+});
+
+server.del("/pessoas/:id", function(req, res, next) {
+    var idPessoa = req.params.id;
+
+    console.log(req);
+    console.log("Deletando pessoa de id " + idPessoa);
+    res.send("");
 });
 
 console.log("Iniciando servidor.");
